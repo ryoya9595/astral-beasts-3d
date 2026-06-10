@@ -7,7 +7,7 @@ import * as THREE from 'three';
 // ---------- zone data ----------
 const ZONES = {
   village: {
-    name:'ミドリバ村', w:40, d:40, ground:0x7cb35e, sky:0xbfe3ff,
+    name:'ミドリバ村', w:40, d:40, ground:0x7cb35e, sky:0xbfe3ff, bgm:'village',
     spawn:{x:0,z:12},
     paths:[{x:0,z:0,w:3,d:40},{x:0,z:0,w:28,d:3}],
     buildings:[
@@ -17,11 +17,11 @@ const ZONES = {
     ],
     flowers:[[-6,8],[6,14],[-14,2],[15,-2],[-4,-14]],
     npcs:[
-      {id:'mid_mom', x:-4,z:5, color:0xffcc80, type:'talk',
+      {id:'mid_mom', x:-4,z:5, look:{hairStyle:'bun', hair:0x6a4a2a, outfit:'dress', shirt:0xff8fa8, apron:true}, type:'talk',
        lines:['そとの くさむらには やせいの ビーストがいるわ。','あいぼうが いれば あんしんね！']},
-      {id:'mid_kid', x:4,z:1, color:0xa5d6a7, type:'talk',
+      {id:'mid_kid', x:4,z:1, look:{scale:.75, hairStyle:'short', hair:0x3a2a1a, shirt:0x8bc34a, pants:0x6a8aaa, blush:true}, type:'talk',
        lines:['モリノはかせの けんきゅうじょは ひだりの たてものだよ！','みどりの やねが めじるし！']},
-      {id:'gate', x:0,z:-16.6, color:0x90a4ae, type:'blocker',
+      {id:'gate', x:0,z:-16.6, look:{hairStyle:'short', hair:0x33291e, shirt:0x607d8b, accessory:'cap', capColor:0x455a64}, type:'blocker',
        need:{flag:'starterDone'}, goneFlag:'village_gate',
        lockedLines:['まって！ あいぼうの ビーストも いないのに','くさむらに はいるのは きけんだよ！','モリノはかせの けんきゅうじょに いってごらん！'],
        openLines:['あいぼうが できたんだね！ 1ばん街道は このさき まっすぐだよ！']},
@@ -31,15 +31,15 @@ const ZONES = {
     treeRing:true,
   },
   route1: {
-    name:'1ばん街道', w:30, d:70, ground:0x79b558, sky:0xbfe3ff,
+    name:'1ばん街道', w:30, d:70, ground:0x79b558, sky:0xbfe3ff, bgm:'field',
     spawn:{x:0,z:31},
     paths:[{x:0,z:0,w:3,d:70}],
     grass:[{x:-7,z:18,w:11,d:10},{x:7.5,z:2,w:10,d:9},{x:-6.5,z:-13,w:10,d:8},{x:6.5,z:-25,w:10,d:7}],
     enc:{locId:'route1', rate:.085},
     npcs:[
-      {id:'r1_t0', x:4.5,z:12, color:0xef9a9a, type:'trainer', locId:'route1', ti:0, flag:'tr3d_r1_0'},
-      {id:'r1_t1', x:-4.5,z:-6, color:0x90caf9, type:'trainer', locId:'route1', ti:1, flag:'tr3d_r1_1'},
-      {id:'r1_sign', x:2.2,z:26, color:0xbcaaa4, type:'talk',
+      {id:'r1_t0', x:4.5,z:12, look:{hairStyle:'spiky', hair:0x2a1a0a, shirt:0xef5350, backpack:true}, type:'trainer', locId:'route1', ti:0, flag:'tr3d_r1_0'},
+      {id:'r1_t1', x:-4.5,z:-6, look:{hairStyle:'short', hair:0x4a3320, shirt:0x64b5f6, accessory:'strawhat'}, type:'trainer', locId:'route1', ti:1, flag:'tr3d_r1_1'},
+      {id:'r1_sign', x:2.2,z:26, look:'sign', type:'talk',
        lines:['「きた：コハルタウン　みなみ：ミドリバ村」','よこに ちいさく「くさむらに ちゅうい！」と かいてある。']},
     ],
     fences:[{x:-9,z:26,w:12,d:.5},{x:9,z:26,w:12,d:.5}],
@@ -50,7 +50,7 @@ const ZONES = {
     treeRing:true, scatterTrees:14,
   },
   koharu: {
-    name:'コハルタウン', w:40, d:40, ground:0x84bd66, sky:0xcfe9ff,
+    name:'コハルタウン', w:40, d:40, ground:0x84bd66, sky:0xcfe9ff, bgm:'village',
     spawn:{x:0,z:15},
     paths:[{x:0,z:0,w:3,d:40},{x:0,z:2,w:30,d:3}],
     buildings:[
@@ -60,9 +60,9 @@ const ZONES = {
     ],
     flowers:[[-5,9],[5,9],[-15,-9],[15,-9]],
     npcs:[
-      {id:'koh_old', x:6,z:6, color:0xbcaaa4, type:'talk',
+      {id:'koh_old', x:6,z:6, look:{scale:.92, hairStyle:'bald', beard:true, shirt:0x8d6e63, pants:0x5a4a3a, cane:true}, type:'talk',
        lines:['モンスターセンターでは ビーストを むりょうで かいふくしてくれるんじゃ。','どうじょうの 守人ハルトは ノーマルタイプの つかいてじゃよ。']},
-      {id:'koh_wall', x:0,z:-17.2, color:0xffe082, type:'talk',
+      {id:'koh_wall', x:0,z:-17.2, look:{hairStyle:'long', hair:0xffb3c8, outfit:'dress', shirt:0xffe082, blush:true}, type:'talk',
        lines:['この さきは 2ばん海岸道路…なんだけど、','3Dデモばんは ここまで！ つづきの ぼうけんは 2Dばんで あそんでね！','（はじまりの聖印 ゲットまで あそべるよ）']},
     ],
     fences:[{x:-11,z:-18,w:18,d:.5},{x:11,z:-18,w:18,d:.5}],
@@ -70,20 +70,20 @@ const ZONES = {
     treeRing:true,
   },
   lab: {
-    name:'モリノ研究所', indoor:true, w:16, d:13, ground:0xe8d8b0, sky:0x2a2444,
+    name:'モリノ研究所', indoor:true, w:16, d:13, ground:0xe8d8b0, sky:0x2a2444, bgm:'village',
     spawn:{x:0,z:4},
     npcs:[
-      {id:'prof', x:0,z:-3.5, color:0xe0e0e0, hair:0xdddddd, type:'story', event:'professor'},
+      {id:'prof', x:-1.4,z:-3.5, look:{hairStyle:'short', hair:0xcccccc, outfit:'coat', shirt:0xf5f5f5, pants:0x4a4a55, accessory:'glasses'}, type:'story', event:'professor'},
     ],
-    pedestals:[{x:-3,z:-4.5,c:0xff7043},{x:0,z:-5.2,c:0x66bb6a},{x:3,z:-4.5,c:0x42a5f5}],
+    pedestals:[{x:-1.6,z:-5.2,c:0xff7043},{x:1.6,z:-5.2,c:0x66bb6a},{x:4,z:-5.2,c:0x42a5f5}],
     exits:[{x:0,z:5.9,w:3,d:1.2, to:'village', tx:-10, tz:-4.4}],
   },
   gym: {
-    name:'ハルトの どうじょう', indoor:true, w:13, d:20, ground:0xd8c8a0, sky:0x2a2444,
+    name:'ハルトの どうじょう', indoor:true, w:13, d:20, ground:0xd8c8a0, sky:0x2a2444, bgm:'field',
     spawn:{x:0,z:8},
     carpet:{x:0,z:0,w:3,d:18,c:0xc0392b},
     npcs:[
-      {id:'leader', x:0,z:-7.5, color:0xffd76a, type:'gymleader', gymTown:'koharu'},
+      {id:'leader', x:0,z:-7.5, look:{hairStyle:'spiky', hair:0x18120c, outfit:'gi', shirt:0xf5f0e8, pants:0x2a2a33, accessory:'headband', capColor:0xff7043}, type:'gymleader', gymTown:'koharu'},
     ],
     exits:[{x:0,z:9.4,w:3,d:1.2, to:'koharu', tx:0, tz:-7.2}],
   },
@@ -118,27 +118,130 @@ function box(w,h,d,c,x,y,z,parent){
   (parent||scene).add(m); return m;
 }
 
-// ---- chibi character ----
-function makeChibi(opt={}){
+// ---- characters（丸みのある個性つきローポリ人形） ----
+function makeCharacter(opt={}){
   const g=new THREE.Group();
-  const shirt=opt.color??0xe05a47, skin=0xffd9b3, hair=opt.hair??0x5a4632;
-  const legL=box(.22,.45,.26,0x3a3160, -.16,.22,0, g);
-  const legR=box(.22,.45,.26,0x3a3160, .16,.22,0, g);
-  box(.7,.65,.5, shirt, 0,.78,0, g);
-  box(.2,.4,.3, shirt, -.45,.85,0, g);
-  box(.2,.4,.3, shirt, .45,.85,0, g);
-  box(.62,.6,.58, skin, 0,1.45,0, g);
-  box(.66,.22,.62, hair, 0,1.74,0, g);
-  box(.66,.18,.2, hair, 0,1.6,-.24, g);
-  if(opt.cap){
-    box(.7,.16,.66, 0xd8344a, 0,1.84,0, g);
-    box(.7,.1,.3, 0xd8344a, 0,1.8,.4, g);
+  const inner=new THREE.Group(); g.add(inner);
+  inner.scale.setScalar(opt.scale||1);
+  const skin=opt.skin??0xffd9b3, hairC=opt.hair??0x5a4632, shirt=opt.shirt??0xe05a47;
+  const pants=opt.pants??0x3a4a8a;
+  const sph=(r,c,x,y,z,sx=1,sy=1,sz=1,p=inner)=>{
+    const m=new THREE.Mesh(new THREE.SphereGeometry(r,12,10),M(c));
+    m.position.set(x,y,z); m.scale.set(sx,sy,sz); m.castShadow=true; p.add(m); return m;
+  };
+  const cyl=(rt,rb,h,c,x,y,z,p=inner)=>{
+    const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,12),M(c));
+    m.position.set(x,y,z); m.castShadow=true; p.add(m); return m;
+  };
+  const cap=(r,len,c,p)=>{
+    const m=new THREE.Mesh(new THREE.CapsuleGeometry(r,len,4,10),M(c));
+    m.castShadow=true; (p||inner).add(m); return m;
+  };
+  // 足（つけ根で回転できるようピボット化）
+  const mkLeg=(x)=>{
+    const pv=new THREE.Group(); pv.position.set(x,.5,0); inner.add(pv);
+    const m=cap(.1,.26,pants,pv); m.position.y=-.25;
+    const shoe=sph(.11,0x4a3328,0,-.45,.05,1,.6,1.35,pv);
+    return pv;
+  };
+  const legL=mkLeg(-.14), legR=mkLeg(.14);
+  // 胴体（服装ちがい）
+  if(opt.outfit==='dress'){
+    const sk=new THREE.Mesh(new THREE.ConeGeometry(.4,.72,12),M(shirt));
+    sk.position.y=.7; sk.castShadow=true; inner.add(sk);
+    sph(.26,shirt,0,1.0,0,1,.85,.85);
+  }else{
+    const body=cap(.27,.32,shirt); body.position.y=.85;
+    if(opt.outfit==='gi') cyl(.29,.29,.1,0x26262e,0,.7,0);
+    if(opt.outfit==='coat') cyl(.3,.36,.3,shirt,0,.6,0);
   }
-  // eyes
-  const e1=box(.07,.1,.04,0x1a1530,-.14,1.48,.3,g);
-  const e2=box(.07,.1,.04,0x1a1530,.14,1.48,.3,g);
-  e1.castShadow=e2.castShadow=false;
-  return {g, legL, legR};
+  if(opt.apron) sph(.22,0xfff3e0,0,.78,.22,1.2,1.5,.4).castShadow=false;
+  if(opt.backpack) sph(.2,0xc9a14a,0,.95,-.32,1,1.3,.8);
+  // 腕（肩ピボット）
+  const mkArm=(x)=>{
+    const pv=new THREE.Group(); pv.position.set(x,1.05,0); inner.add(pv);
+    const sleeve=opt.outfit==='dress'?skin:shirt;
+    const m=cap(.08,.24,sleeve,pv); m.position.y=-.19;
+    sph(.085,skin,0,-.37,0,1,1,1,pv);
+    pv.rotation.z=x<0?.16:-.16;
+    return pv;
+  };
+  const armL=mkArm(-.35), armR=mkArm(.35);
+  // 頭・耳
+  sph(.34,skin,0,1.5,0);
+  sph(.07,skin,-.33,1.5,0); sph(.07,skin,.33,1.5,0);
+  // 目（大きめ・ハイライトつき）
+  [-.13,.13].forEach(ex=>{
+    sph(.075,0xffffff,ex,1.52,.28,1,1.2,.55).castShadow=false;
+    sph(.042,0x26262e,ex,1.52,.33,1,1.2,.6).castShadow=false;
+    sph(.016,0xffffff,ex+.02,1.55,.355,1,1,1).castShadow=false;
+  });
+  // 口・ほっぺ
+  sph(.05,0xc96a5a,0,1.355,.3,1.5,.5,.5).castShadow=false;
+  if(opt.blush){
+    sph(.05,0xffa0b0,-.22,1.42,.24,1,.65,.45).castShadow=false;
+    sph(.05,0xffa0b0,.22,1.42,.24,1,.65,.45).castShadow=false;
+  }
+  // 髪型
+  const hs=opt.hairStyle||'short';
+  if(hs!=='bald'){
+    sph(.36,hairC,0,1.57,-.04,1,.85,1);
+    sph(.3,hairC,0,1.68,.1,1,.55,.9);
+  }
+  if(hs==='spiky'){
+    [[-.16,1.84],[0,1.9],[.16,1.84]].forEach(([sx,sy])=>{
+      const c=new THREE.Mesh(new THREE.ConeGeometry(.09,.24,6),M(hairC));
+      c.position.set(sx,sy,-.02); c.castShadow=true; inner.add(c);
+    });
+  }
+  if(hs==='long') sph(.3,hairC,0,1.18,-.18,1.1,1.6,.5);
+  if(hs==='bun') sph(.15,hairC,0,1.86,-.16);
+  if(hs==='ponytail'){
+    const t=cap(.09,.32,hairC); t.position.set(0,1.45,-.4); t.rotation.x=.55;
+  }
+  if(hs==='bald'&&opt.beard){
+    sph(.12,0xdddddd,-.3,1.42,-.06); sph(.12,0xdddddd,.3,1.42,-.06);
+  }
+  if(opt.beard) sph(.2,0xeeeeee,0,1.25,.18,1.15,.9,.7);
+  // 小物
+  const acc=opt.accessory, accC=opt.capColor??0xd8344a;
+  if(acc==='cap'){
+    sph(.37,accC,0,1.76,0,1,.55,1);
+    box(.4,.05,.26,accC,0,1.69,.38,inner);
+  }
+  if(acc==='strawhat'){
+    cyl(.58,.58,.05,0xe8d8a0,0,1.74,0);
+    sph(.3,0xe8d8a0,0,1.78,0,1,.6,1);
+    cyl(.31,.31,.06,0xc04a3a,0,1.76,0);
+  }
+  if(acc==='sailor'){
+    cyl(.38,.38,.15,0xffffff,0,1.8,0);
+    cyl(.39,.39,.05,0x3a4a8a,0,1.73,0);
+  }
+  if(acc==='headband') cyl(.37,.37,.09,accC,0,1.6,0);
+  if(acc==='glasses'){
+    [-.13,.13].forEach(ex=>{
+      const t=new THREE.Mesh(new THREE.TorusGeometry(.09,.02,6,14),M(0x26262e));
+      t.position.set(ex,1.52,.3); inner.add(t);
+    });
+    box(.07,.02,.02,0x26262e,0,1.52,.31,inner);
+  }
+  if(opt.cane){
+    const c=cyl(.025,.03,.95,0x8a5a36,.46,.47,.12);
+    sph(.05,0x6a4a2a,.46,.95,.12);
+  }
+  return {g, legL, legR, armL, armR};
+}
+// 看板
+function makeSign(){
+  const g=new THREE.Group();
+  const post=new THREE.Mesh(new THREE.CylinderGeometry(.07,.09,1.1,8),M(0x8a5a36));
+  post.position.y=.55; post.castShadow=true; g.add(post);
+  const bd=new THREE.Mesh(new THREE.BoxGeometry(1.15,.55,.12),M(0xc9a06a));
+  bd.position.y=1.12; bd.castShadow=true; g.add(bd);
+  const bd2=new THREE.Mesh(new THREE.BoxGeometry(1.02,.42,.14),M(0xa8804a));
+  bd2.position.y=1.12; g.add(bd2);
+  return g;
 }
 function makeTree(scale=1){
   const g=new THREE.Group();
@@ -272,15 +375,18 @@ function buildZone(id){
   (zone.npcs||[]).forEach(n=>{
     if(n.goneFlag&&G.flags[n.goneFlag]) return;
     if(n.hideFlag&&G.flags[n.hideFlag]) return;
-    const c=makeChibi({color:n.color, hair:n.hair});
-    c.g.position.set(n.x,0,n.z);
-    c.g.rotation.y=Math.PI; // face south (camera side)
-    scene.add(c.g);
-    npcObjs.push({n, obj:c.g});
+    let obj;
+    if(n.look==='sign'){ obj=makeSign(); }
+    else{ obj=makeCharacter(n.look||{shirt:n.color, hair:n.hair}).g; }
+    obj.position.set(n.x,0,n.z);
+    obj.rotation.y=Math.PI; // face south (camera side)
+    scene.add(obj);
+    npcObjs.push({n, obj});
     colliders.push({minx:n.x-.5,maxx:n.x+.5,minz:n.z-.5,maxz:n.z+.5, npcId:n.id});
   });
   // player
-  playerParts=makeChibi({cap:true});
+  playerParts=makeCharacter({hairStyle:'short', hair:0x4a3320, shirt:0xe05a47,
+    pants:0x2a3a6a, accessory:'cap', capColor:0xd8344a, backpack:true});
   player=playerParts.g;
   scene.add(player);
 }
@@ -310,6 +416,7 @@ function load(id,x,z){
   document.getElementById('world').classList.add('active');
   resize();
   showZoneName();
+  BGM.zone(zone.bgm||'village');
   save();
 }
 
@@ -419,10 +526,12 @@ function tick(){
   requestAnimationFrame(tick);
   const dt=Math.min(clock.getDelta(),.05);
   if(scene&&player){
-    const moving=(held.x||held.z)&&canInput();
+    const mag=Math.hypot(held.x,held.z);
+    const moving=mag>.15&&canInput();
+    const dash=isDashing();
     if(moving){
-      const len=Math.hypot(held.x,held.z)||1;
-      const sp=5.2*dt;
+      const len=mag||1;
+      const sp=(dash?10.2:5.8)*dt;
       const dx=held.x/len*sp, dz=held.z/len*sp;
       let nx=player.position.x+dx, nz=player.position.z+dz;
       if(!collide(nx,player.position.z)) player.position.x=nx;
@@ -460,9 +569,13 @@ function tick(){
     while(dr>Math.PI)dr-=2*Math.PI; while(dr<-Math.PI)dr+=2*Math.PI;
     player.rotation.y+=dr*.3;
     const t=performance.now()/1000;
-    const swing=moving?Math.sin(t*11)*.5:0;
+    const swing=moving?Math.sin(t*(dash?16:11))*(dash?.7:.5):0;
     playerParts.legL.rotation.x=swing;
     playerParts.legR.rotation.x=-swing;
+    if(playerParts.armL){
+      playerParts.armL.rotation.x=-swing*.8;
+      playerParts.armR.rotation.x=swing*.8;
+    }
     // camera follow
     const camT=new THREE.Vector3(player.position.x, 12.5, player.position.z+12.5);
     camera.position.lerp(camT,.12);
@@ -475,13 +588,16 @@ tick();
 // ---------- input ----------
 const keys=new Set();
 const DIRV={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
+let joyVec={x:0,z:0}, joyDash=false;
+function isDashing(){ return joyDash||keys.has('dash'); }
 function updateHeld(){
-  held={x:0,z:0};
-  keys.forEach(d=>{ held.x+=DIRV[d][0]; held.z+=DIRV[d][1]; });
+  held={x:joyVec.x, z:joyVec.z};
+  keys.forEach(d=>{ if(DIRV[d]){ held.x+=DIRV[d][0]; held.z+=DIRV[d][1]; } });
 }
 const KEYMAP={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
 document.addEventListener('keydown',e=>{
   if(KEYMAP[e.key]){ keys.add(KEYMAP[e.key]); updateHeld(); e.preventDefault(); }
+  else if(e.key==='Shift'){ keys.add('dash'); }
   else if(e.key==='z'||e.key==='Enter'){
     if(window._dlgAdvance){ window._dlgAdvance(); } else interact();
     e.preventDefault();
@@ -490,16 +606,50 @@ document.addEventListener('keydown',e=>{
 });
 document.addEventListener('keyup',e=>{
   if(KEYMAP[e.key]){ keys.delete(KEYMAP[e.key]); updateHeld(); }
+  else if(e.key==='Shift'){ keys.delete('dash'); }
 });
-document.querySelectorAll('#dpad .pk').forEach(b=>{
-  const d=b.dataset.d;
-  const down=(e)=>{ e.preventDefault(); keys.add(d); updateHeld(); };
-  const up=(e)=>{ e.preventDefault(); keys.delete(d); updateHeld(); };
-  b.addEventListener('touchstart',down,{passive:false});
-  b.addEventListener('touchend',up); b.addEventListener('touchcancel',up);
-  b.addEventListener('mousedown',down);
-  b.addEventListener('mouseup',up); b.addEventListener('mouseleave',up);
+
+// ---- バーチャルスティック（浮動式・深倒しでダッシュ） ----
+const joyZone=document.getElementById('joy-zone');
+const joyBase=document.getElementById('joy-base');
+const joyKnob=document.getElementById('joy-knob');
+const JOY_R=46;
+let joyId=null, joyCx=0, joyCy=0;
+function joyUpdate(e){
+  const dx=e.clientX-joyCx, dy=e.clientY-joyCy;
+  const d=Math.hypot(dx,dy);
+  const cl=Math.min(d,JOY_R);
+  const nx=d>0?dx/d:0, ny=d>0?dy/d:0;
+  joyKnob.style.transform=`translate(calc(-50% + ${nx*cl}px), calc(-50% + ${ny*cl}px))`;
+  joyVec={x:nx*(cl/JOY_R), z:ny*(cl/JOY_R)};
+  joyDash=(cl/JOY_R)>=.8;
+  joyBase.classList.toggle('dash',joyDash);
+  updateHeld();
+}
+function joyEnd(){
+  joyId=null; joyVec={x:0,z:0}; joyDash=false;
+  joyBase.style.display='none';
+  joyBase.classList.remove('dash');
+  joyKnob.style.transform='translate(-50%,-50%)';
+  updateHeld();
+}
+joyZone.addEventListener('pointerdown',e=>{
+  if(joyId!==null) return;
+  joyId=e.pointerId;
+  joyCx=e.clientX; joyCy=e.clientY;
+  const r=joyZone.getBoundingClientRect();
+  joyBase.style.left=(e.clientX-r.left)+'px';
+  joyBase.style.top=(e.clientY-r.top)+'px';
+  joyBase.style.display='block';
+  try{ joyZone.setPointerCapture(e.pointerId); }catch(err){}
+  joyUpdate(e);
+  e.preventDefault();
 });
+joyZone.addEventListener('pointermove',e=>{
+  if(e.pointerId===joyId) joyUpdate(e);
+});
+joyZone.addEventListener('pointerup',e=>{ if(e.pointerId===joyId) joyEnd(); });
+joyZone.addEventListener('pointercancel',e=>{ if(e.pointerId===joyId) joyEnd(); });
 document.getElementById('btn-a').addEventListener('click',()=>{
   if(window._dlgAdvance){ window._dlgAdvance(); } else interact();
 });
@@ -520,6 +670,6 @@ window.World={
   pause(){ paused=true; },
   resume(){ paused=false; },
   interact,
-  setHeld(d){ keys.clear(); if(d) keys.add(d); updateHeld(); },
-  debug(){ return {paused, zoneId, pos:[G.x,G.y], canInput:canInput()}; },
+  setHeld(d){ keys.clear(); joyVec={x:0,z:0}; joyDash=false; if(d) keys.add(d); updateHeld(); },
+  debug(){ return {paused, zoneId, pos:[G.x,G.y], dash:isDashing(), canInput:canInput()}; },
 };

@@ -25,9 +25,37 @@ function beep(freq=520,dur=.06,type='square',vol=.04){
   }catch(e){}
 }
 
+// ---------- BGM (フリー音楽素材 魔王魂 https://maou.audio/) ----------
+const BGM=(()=>{
+  const SRC={village:'audio/village01.mp3', field:'audio/field05.mp3', battle:'audio/battle32.mp3'};
+  const pool={}; let cur=null, zoneTrack='village', unlocked=false;
+  function el(k){
+    if(!pool[k]){ pool[k]=new Audio(SRC[k]); pool[k].loop=true; pool[k].volume=.35; pool[k].preload='auto'; }
+    return pool[k];
+  }
+  return {
+    unlock(){ // 初回のユーザー操作内で全トラックを解錠（iOS対策）
+      if(unlocked) return; unlocked=true;
+      Object.keys(SRC).forEach(k=>{
+        const a=el(k); a.muted=true;
+        a.play().then(()=>{ a.pause(); a.currentTime=0; a.muted=false; }).catch(()=>{ a.muted=false; });
+      });
+    },
+    play(k){
+      if(cur===k) return;
+      if(cur&&pool[cur]) pool[cur].pause();
+      cur=k;
+      const a=el(k); a.currentTime=0;
+      a.play().catch(()=>{});
+    },
+    zone(k){ zoneTrack=k||zoneTrack; this.play(zoneTrack); },
+    toZone(){ this.play(zoneTrack); },
+  };
+})();
+
 // ---------- ui layers ----------
 function uiOpen(){ $id('app').classList.add('active'); $id('world').classList.remove('active'); if(typeof World!=='undefined') World.pause(); }
-function uiClose(){ $id('app').classList.remove('active'); app.innerHTML=''; $id('world').classList.add('active'); if(typeof World!=='undefined') World.resume(); }
+function uiClose(){ $id('app').classList.remove('active'); app.innerHTML=''; $id('world').classList.add('active'); if(typeof World!=='undefined') World.resume(); BGM.toZone(); }
 
 // ---------- sprites (procedural SVG, battle view) ----------
 function spriteSVG(spId, cls=''){
@@ -351,6 +379,7 @@ async function tryCatch(orbKey){
 
 async function battle(cfg){
   uiOpen();
+  BGM.play('battle');
   const B=battleState;
   B.enemyParty=cfg.mons;B.ei=0;
   B.enemy=cfg.mons[0];

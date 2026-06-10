@@ -29,12 +29,14 @@ function renderTitle(){
     ${hasSave?'<button class="btn" id="bt-continue">つづきから</button>':''}
     <button class="btn" id="bt-new">はじめから</button>
     <div class="muted press" style="margin-top:10px">- PRESS BUTTON -</div>
+    <div class="muted" style="font-size:10px; margin-top:14px">BGM：フリー音楽素材 魔王魂</div>
   </div>`;
   if(hasSave) $id('bt-continue').onclick=()=>{
+    BGM.unlock();
     G=loadSave(); beep(880,.08);
     uiClose(); World.load(G.map,G.x,G.y);
   };
-  $id('bt-new').onclick=()=>{ beep(880,.08); startNewGame(); };
+  $id('bt-new').onclick=()=>{ BGM.unlock(); beep(880,.08); startNewGame(); };
 }
 
 async function startNewGame(){

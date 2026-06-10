@@ -2,60 +2,96 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>アストラルビースト 3D 〜はじまりの章〜</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
+/* ---- fullscreen override ---- */
+html,body{margin:0; padding:0; overflow:hidden; background:#0a0820;}
+body{display:block;}
+#screen{
+  position:fixed; inset:0; height:100dvh; min-height:0; border-radius:0;
+}
 #world{background:#bfe3ff;}
 #world canvas{width:100%; height:100%; display:block;}
 #zone-name{
-  position:absolute; top:8px; left:8px;
+  position:absolute; top:calc(8px + env(safe-area-inset-top)); left:10px;
   background:rgba(16,20,58,.85); color:var(--gold);
   border:2px solid var(--panel-edge); border-radius:6px;
-  padding:3px 10px; font-size:12px; letter-spacing:1px;
+  padding:3px 10px; font-size:13px; letter-spacing:1px;
   pointer-events:none; transition:opacity .5s; opacity:0; z-index:5;
 }
 #zone-name.show{opacity:1;}
 #battle-flash{position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:30;}
+
+/* ---- in-screen controls ---- */
+#joy-zone{
+  position:absolute; left:0; bottom:0; width:60%; height:62%;
+  z-index:20; touch-action:none;
+}
+#joy-base{
+  position:absolute; width:116px; height:116px; border-radius:50%;
+  background:rgba(255,255,255,.07);
+  border:2px solid rgba(255,255,255,.3);
+  display:none; pointer-events:none;
+  transform:translate(-50%,-50%);
+}
+#joy-base.dash{border-color:var(--gold); box-shadow:0 0 14px rgba(255,215,106,.5);}
+#joy-knob{
+  position:absolute; left:50%; top:50%; width:52px; height:52px; border-radius:50%;
+  background:rgba(255,255,255,.4);
+  border:2px solid rgba(255,255,255,.5);
+  transform:translate(-50%,-50%);
+}
+#btn-a{
+  position:absolute; right:18px; bottom:calc(30px + env(safe-area-inset-bottom));
+  width:68px; height:68px; border-radius:50%; z-index:21;
+  font-family:inherit; font-size:22px; color:var(--gold);
+  background:linear-gradient(160deg, rgba(122,42,74,.85), rgba(74,24,48,.85));
+  border:2px solid rgba(255,255,255,.25);
+  box-shadow:0 4px 12px rgba(0,0,0,.4);
+  touch-action:manipulation;
+}
+#btn-a:active{transform:scale(.93);}
+#btn-menu{
+  position:absolute; right:14px; top:calc(10px + env(safe-area-inset-top));
+  width:44px; height:44px; border-radius:50%; z-index:21;
+  font-family:inherit; font-size:16px; color:#cfc6f4;
+  background:rgba(42,36,68,.8); border:2px solid rgba(255,255,255,.2);
+  touch-action:manipulation;
+}
+#key-hint{
+  position:absolute; bottom:8px; left:50%; transform:translateX(-50%);
+  color:rgba(255,255,255,.55); font-size:11px; z-index:6; pointer-events:none;
+  text-shadow:0 1px 2px #000; display:none;
+}
+@media (hover:hover) and (pointer:fine){ #key-hint{display:block;} }
+#scanlines{opacity:.5;}
 </style>
 <script type="importmap">
 { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
 </script>
 </head>
 <body>
-<div id="stars"></div>
-<div id="console-frame">
-  <div id="screen-bezel">
-    <div id="screen">
-      <div id="world">
-        <div id="zone-name"></div>
-        <div id="battle-flash"></div>
-      </div>
-      <div id="app"></div>
-      <div id="dlgbox" class="hidden">
-        <div id="dlg-text"></div>
-        <div id="dlg-arrow">▼</div>
-        <div id="dlg-choices"></div>
-      </div>
-      <div id="scanlines"></div>
-    </div>
+<div id="screen">
+  <div id="world">
+    <div id="zone-name"></div>
+    <div id="battle-flash"></div>
   </div>
-  <div id="pad-row">
-    <div id="dpad">
-      <button class="pk" data-d="up">▲</button>
-      <button class="pk" data-d="left">◀</button>
-      <button class="pk" data-d="down">▼</button>
-      <button class="pk" data-d="right">▶</button>
-    </div>
-    <div id="ab">
-      <button class="pk round" id="btn-menu">☰</button>
-      <button class="pk round big" id="btn-a">A</button>
-    </div>
+  <div id="app"></div>
+  <div id="dlgbox" class="hidden">
+    <div id="dlg-text"></div>
+    <div id="dlg-arrow">▼</div>
+    <div id="dlg-choices"></div>
   </div>
-  <div id="console-label">ASTRAL BEASTS <span>3D — DEMO</span></div>
+  <div id="scanlines"></div>
+  <div id="joy-zone"><div id="joy-base"><div id="joy-knob"></div></div></div>
+  <button id="btn-menu">☰</button>
+  <button id="btn-a">A</button>
+  <div id="key-hint">移動：WASD/矢印　ダッシュ：Shift　はなす：Z　メニュー：X</div>
 </div>
 <script src="data.js"></script>
 <script src="battle.js"></script>
