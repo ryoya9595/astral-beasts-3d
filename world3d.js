@@ -25,8 +25,12 @@ const ZONES = {
        need:{flag:'starterDone'}, goneFlag:'village_gate',
        lockedLines:['まって！ あいぼうの ビーストも いないのに','くさむらに はいるのは きけんだよ！','モリノはかせの けんきゅうじょに いってごらん！'],
        openLines:['あいぼうが できたんだね！ 1ばん街道は このさき まっすぐだよ！']},
+      {id:'sign_lab', x:-7.6,z:-5.4, look:'sign', type:'talk',
+       lines:['「モリノ研究所」','ビーストの けんきゅうを している ところ。']},
+      {id:'sign_center_v', x:12.4,z:10.6, look:'sign', type:'talk',
+       lines:['「モンスターセンター」','ビーストの かいふくは おまかせ！']},
     ],
-    fences:[{x:-11,z:-17.5,w:18,d:.5},{x:11,z:-17.5,w:18,d:.5}],
+    fences:[{x:-10.6,z:-17.5,w:18.8,d:.5},{x:10.6,z:-17.5,w:18.8,d:.5}],
     exits:[{x:0,z:-19.3,w:4,d:1.6, to:'route1', tx:0, tz:31}],
     treeRing:true,
   },
@@ -64,8 +68,14 @@ const ZONES = {
        lines:['モンスターセンターでは ビーストを むりょうで かいふくしてくれるんじゃ。','どうじょうの 守人ハルトは ノーマルタイプの つかいてじゃよ。']},
       {id:'koh_wall', x:0,z:-17.2, look:{hairStyle:'long', hair:0xffb3c8, outfit:'dress', shirt:0xffe082, blush:true}, type:'talk',
        lines:['この さきは 2ばん海岸道路…なんだけど、','3Dデモばんは ここまで！ つづきの ぼうけんは 2Dばんで あそんでね！','（はじまりの聖印 ゲットまで あそべるよ）']},
+      {id:'sign_center_k', x:-8.6,z:1.8, look:'sign', type:'talk',
+       lines:['「モンスターセンター」','ビーストの かいふくと ボックスは こちら。']},
+      {id:'sign_shop_k', x:8.6,z:1.8, look:'sign', type:'talk',
+       lines:['「ショップ」','たびの どうぐ うってます！']},
+      {id:'sign_gym_k', x:2.6,z:-7.2, look:'sign', type:'talk',
+       lines:['「ハルトの どうじょう」','はじまりの聖印に ちょうせんできる ばしょ。']},
     ],
-    fences:[{x:-11,z:-18,w:18,d:.5},{x:11,z:-18,w:18,d:.5}],
+    fences:[{x:-10.6,z:-18,w:18.8,d:.5},{x:10.6,z:-18,w:18.8,d:.5}],
     exits:[{x:0,z:18.8,w:4,d:1.8, to:'route1', tx:0, tz:-31}],
     treeRing:true,
   },
@@ -86,6 +96,33 @@ const ZONES = {
       {id:'leader', x:0,z:-7.5, look:{hairStyle:'spiky', hair:0x18120c, outfit:'gi', shirt:0xf5f0e8, pants:0x2a2a33, accessory:'headband', capColor:0xff7043}, type:'gymleader', gymTown:'koharu'},
     ],
     exits:[{x:0,z:9.4,w:3,d:1.2, to:'koharu', tx:0, tz:-7.2}],
+  },
+  center_in: {
+    name:'モンスターセンター', indoor:true, w:14, d:11, ground:0xf3e2c8, sky:0x2a2444, bgm:'village',
+    spawn:{x:0,z:3.2},
+    props:[
+      {kind:'counter', x:0, z:-2.6, w:6},
+      {kind:'plant', x:-5.6, z:-3.8},{kind:'plant', x:5.6, z:1.8},
+      {kind:'bench', x:-4.6, z:2.6},
+    ],
+    npcs:[
+      {id:'nurse', x:0, z:-3.5, look:{hairStyle:'bun', hair:0xff8fa8, outfit:'dress', shirt:0xfff5f8, apron:true, blush:true}, type:'nurse'},
+      {id:'pcbox', x:5.2, z:-3.6, look:'pc', type:'box'},
+    ],
+    exits:[{x:0,z:5.0,w:3,d:1.4, to:'__back'}],
+  },
+  shop_in: {
+    name:'ショップ', indoor:true, w:14, d:11, ground:0xefe0c0, sky:0x2a2444, bgm:'village',
+    spawn:{x:0,z:3.2},
+    props:[
+      {kind:'counter', x:-2.5, z:-2.6, w:5},
+      {kind:'shelf', x:5.2, z:-3.6},{kind:'shelf', x:5.2, z:-.8},{kind:'shelf', x:5.2, z:2.0},
+      {kind:'plant', x:-5.6, z:2.6},
+    ],
+    npcs:[
+      {id:'clerk', x:-2.5, z:-3.5, look:{hairStyle:'ponytail', hair:0x4a3320, shirt:0x80cbc4}, type:'clerk'},
+    ],
+    exits:[{x:0,z:5.0,w:3,d:1.4, to:'__back'}],
   },
 };
 
@@ -243,6 +280,18 @@ function makeSign(){
   bd2.position.y=1.12; g.add(bd2);
   return g;
 }
+// ボックスPC
+function makePC(){
+  const g=new THREE.Group();
+  const desk=new THREE.Mesh(new THREE.BoxGeometry(1.2,.9,.9),M(0xb08a5a));
+  desk.position.y=.45; desk.castShadow=true; g.add(desk);
+  const mon=new THREE.Mesh(new THREE.BoxGeometry(.95,.72,.2),M(0x4e4256));
+  mon.position.set(0,1.32,0); mon.castShadow=true; g.add(mon);
+  const scr=new THREE.Mesh(new THREE.BoxGeometry(.72,.5,.06),
+    new THREE.MeshLambertMaterial({color:0x9ad0ff, emissive:0x4a90d8, emissiveIntensity:.6}));
+  scr.position.set(0,1.32,.12); g.add(scr);
+  return g;
+}
 function makeTree(scale=1){
   const g=new THREE.Group();
   const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.22*scale,.3*scale,1.1*scale,6),M(0x7a5230));
@@ -371,12 +420,39 @@ function buildZone(id){
     orb.position.set(p.x,1.1,p.z); scene.add(orb);
     colliders.push({minx:p.x-.5,maxx:p.x+.5,minz:p.z-.5,maxz:p.z+.5});
   });
+  // interior props
+  (zone.props||[]).forEach(p=>{
+    if(p.kind==='counter'){
+      const w=p.w||4;
+      box(w,1.0,.9,0xb08a5a, p.x,.5,p.z);
+      box(w+.2,.12,1.05,0xc89e6a, p.x,1.06,p.z);
+      colliders.push({minx:p.x-w/2,maxx:p.x+w/2,minz:p.z-.6,maxz:p.z+.6});
+    }
+    if(p.kind==='shelf'){
+      box(1.0,2.2,2.0,0x8a5a36, p.x,1.1,p.z);
+      const cols=[0xe57373,0x64b5f6,0xfff176,0x81c784];
+      for(let i=0;i<4;i++) box(.2,.34,.5,cols[i], p.x-.58,(i<2?1.6:.95), p.z+(i%2? .55:-.55));
+      colliders.push({minx:p.x-.75,maxx:p.x+.6,minz:p.z-1.1,maxz:p.z+1.1});
+    }
+    if(p.kind==='plant'){
+      box(.5,.5,.5,0xc96a3a,p.x,.25,p.z);
+      const c=new THREE.Mesh(new THREE.ConeGeometry(.45,.9,7),M(0x3a8a3a));
+      c.position.set(p.x,.95,p.z); c.castShadow=true; scene.add(c);
+      colliders.push({minx:p.x-.4,maxx:p.x+.4,minz:p.z-.4,maxz:p.z+.4});
+    }
+    if(p.kind==='bench'){
+      box(1.8,.3,.7,0xa8754a,p.x,.4,p.z);
+      box(.15,.4,.7,0x8a5a36,p.x-.8,.2,p.z); box(.15,.4,.7,0x8a5a36,p.x+.8,.2,p.z);
+      colliders.push({minx:p.x-1,maxx:p.x+1,minz:p.z-.45,maxz:p.z+.45});
+    }
+  });
   // npcs
   (zone.npcs||[]).forEach(n=>{
     if(n.goneFlag&&G.flags[n.goneFlag]) return;
     if(n.hideFlag&&G.flags[n.hideFlag]) return;
     let obj;
     if(n.look==='sign'){ obj=makeSign(); }
+    else if(n.look==='pc'){ obj=makePC(); }
     else{ obj=makeCharacter(n.look||{shirt:n.color, hair:n.hair}).g; }
     obj.position.set(n.x,0,n.z);
     obj.rotation.y=Math.PI; // face south (camera side)
@@ -410,6 +486,8 @@ function load(id,x,z){
   G.map=id;
   G.x=(x!==undefined)?x:zone.spawn.x;
   G.y=(z!==undefined)?z:zone.spawn.z;
+  G.x=Math.max(-(zone.w/2-1.2), Math.min(zone.w/2-1.2, G.x));
+  G.y=Math.max(-(zone.d/2-1.2), Math.min(zone.d/2-1.2, G.y));
   player.position.set(G.x,0,G.y);
   facing=Math.PI;
   camera.position.set(G.x, 9, G.y+9);
@@ -427,8 +505,10 @@ function canInput(){
 }
 function collide(nx,nz){
   const r=.45;
-  if(Math.abs(nx)>zone.w/2-1) return true;
-  if(Math.abs(nz)>zone.d/2-1 && !(zone.exits||[]).some(e=>Math.abs(nx-e.x)<e.w/2)) return true;
+  if(Math.abs(nx)>zone.w/2-1 || Math.abs(nz)>zone.d/2-1){
+    const nearExit=(zone.exits||[]).some(e=>Math.abs(nx-e.x)<e.w/2+.4 && Math.abs(nz-e.z)<Math.max(e.d,5));
+    if(!nearExit) return true;
+  }
   return colliders.some(c=>nx>c.minx-r&&nx<c.maxx+r&&nz>c.minz-r&&nz<c.maxz+r);
 }
 function rectHit(t,x,z){ return Math.abs(x-t.x)<t.w/2 && Math.abs(z-t.z)<t.d/2; }
@@ -466,6 +546,18 @@ async function handleNPC(o){
   o.obj.lookAt(player.position.x,0,player.position.z);
   try{
     if(n.type==='talk'){ await say(...n.lines); }
+    else if(n.type==='nurse'){
+      await say('モンスターセンターへ ようこそ！','ビーストたちを おあずかりしますね。');
+      healParty(); beep(990,.15,'triangle',.06);
+      G.respawn={map:zoneId, x:zone.spawn.x, y:zone.spawn.z};
+      save();
+      await say('おまたせしました！ みんな げんきいっぱいです！','また どうぞ！');
+    }
+    else if(n.type==='clerk'){
+      await say('いらっしゃいませ！');
+      renderShop(()=>{ uiClose(); }); return;
+    }
+    else if(n.type==='box'){ renderBox(()=>{ uiClose(); }); return; }
     else if(n.type==='blocker'){
       if(!needMet(n.need)){ await say(...(n.lockedLines||['とおれないよ。'])); }
       else{
@@ -494,14 +586,11 @@ async function doorAction(b){
   try{
     const a=b.door.action;
     if(a==='say'){ await say(...b.door.lines); }
-    else if(a==='center'){
-      await say('モンスターセンターへ ようこそ！','ビーストたちを おあずかりしますね。');
-      healParty(); beep(990,.15,'triangle',.06);
-      G.respawn={map:zoneId, x:b._trigger.x, y:b._trigger.z+1};
-      save();
-      await say('おまたせしました！ みんな げんきいっぱいです！');
+    else if(a==='center'||a==='shop'){
+      G.lastDoor={map:zoneId, x:b._trigger.x, z:b._trigger.z+1.5};
+      load(a==='center'?'center_in':'shop_in');
+      return;
     }
-    else if(a==='shop'){ renderShop(()=>{ uiClose(); }); return; }
     else if(a==='lab'){ load('lab'); return; }
     else if(a==='gym'){ load('gym'); return; }
   } finally {
@@ -522,9 +611,14 @@ async function interact(){
 
 // ---------- loop ----------
 let lastTriggerKey=null;
+let _tickN=0;
 function tick(){
   requestAnimationFrame(tick);
-  const dt=Math.min(clock.getDelta(),.05);
+  tickBody();
+}
+function tickBody(dtOverride){
+  _tickN++;
+  const dt=Math.min(dtOverride??clock.getDelta(),.05);
   if(scene&&player){
     const mag=Math.hypot(held.x,held.z);
     const moving=mag>.15&&canInput();
@@ -548,7 +642,11 @@ function tick(){
       }
       // exits
       for(const e of (zone.exits||[])){
-        if(rectHit(e,G.x,G.y)){ load(e.to,e.tx,e.tz); return; }
+        if(rectHit(e,G.x,G.y)){
+          if(e.to==='__back'&&G.lastDoor){ load(G.lastDoor.map,G.lastDoor.x,G.lastDoor.z); }
+          else load(e.to,e.tx,e.tz);
+          return;
+        }
       }
       // door triggers
       for(const b of (zone.buildings||[])){
@@ -679,5 +777,6 @@ window.World={
   resume(){ paused=false; },
   interact,
   setHeld(d){ keys.clear(); joyVec={x:0,z:0}; joyDash=false; if(d) keys.add(d); updateHeld(); },
-  debug(){ return {paused, zoneId, pos:[G.x,G.y], dash:isDashing(), canInput:canInput()}; },
+  debug(){ return {paused, zoneId, pos:[G.x,G.y], dash:isDashing(), canInput:canInput(), held:{...held}, tickN:_tickN, sceneOk:!!scene, playerOk:!!player}; },
+  _tick(dt){ tickBody(dt); },
 };

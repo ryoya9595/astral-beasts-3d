@@ -1,6 +1,6 @@
 /* ============================================
    ASTRAL BEASTS 3D — demo story & boot
-   範囲：ゲーム開始 〜 最初のジム（守人ハルト）クリアまで
+   範囲：ゲーム開始 〜 最初のどうじょう（守人ハルト）クリアまで
    ============================================ */
 'use strict';
 
@@ -24,7 +24,7 @@ function renderTitle(){
     <div id="title-beast">${spriteSVG('astraleon')}</div>
     <div id="title-logo">アストラル<br>ビースト<span style="font-size:18px"> 3D</span></div>
     <div id="title-sub">〜 はじまりの章（デモ版） 〜</div>
-    <div class="muted" style="font-size:11px">最初のジムクリアまで あそべるよ</div>
+    <div class="muted" style="font-size:11px">最初の守人に かつまで あそべるよ</div>
     <div style="height:8px"></div>
     ${hasSave?'<button class="btn" id="bt-continue">つづきから</button>':''}
     <button class="btn" id="bt-new">はじめから</button>
@@ -172,7 +172,7 @@ function renderDemoClear(){
     <div style="height:14px"></div>
     <div>はじまりの聖印 ゲット！　${esc(G.name)}</div>
     <div class="muted" style="margin-top:16px; line-height:2">
-      ぼうけんの つづき（ジム8つ・ヴォイド団・<br>でんせつ・リーグ・チャンピオン）は<br>
+      ぼうけんの つづき（守人8人・ヴォイド団・<br>でんせつ・リーグ・チャンピオン）は<br>
       2Dワールドばんで あそべるよ！<br><br>
       ASTRAL BEASTS 3D — DEMO
     </div>
