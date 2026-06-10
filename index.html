@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>アストラルビースト 3D 〜はじまりの章〜</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+#world{background:#bfe3ff;}
+#world canvas{width:100%; height:100%; display:block;}
+#zone-name{
+  position:absolute; top:8px; left:8px;
+  background:rgba(16,20,58,.85); color:var(--gold);
+  border:2px solid var(--panel-edge); border-radius:6px;
+  padding:3px 10px; font-size:12px; letter-spacing:1px;
+  pointer-events:none; transition:opacity .5s; opacity:0; z-index:5;
+}
+#zone-name.show{opacity:1;}
+#battle-flash{position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:30;}
+</style>
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
+</head>
+<body>
+<div id="stars"></div>
+<div id="console-frame">
+  <div id="screen-bezel">
+    <div id="screen">
+      <div id="world">
+        <div id="zone-name"></div>
+        <div id="battle-flash"></div>
+      </div>
+      <div id="app"></div>
+      <div id="dlgbox" class="hidden">
+        <div id="dlg-text"></div>
+        <div id="dlg-arrow">▼</div>
+        <div id="dlg-choices"></div>
+      </div>
+      <div id="scanlines"></div>
+    </div>
+  </div>
+  <div id="pad-row">
+    <div id="dpad">
+      <button class="pk" data-d="up">▲</button>
+      <button class="pk" data-d="left">◀</button>
+      <button class="pk" data-d="down">▼</button>
+      <button class="pk" data-d="right">▶</button>
+    </div>
+    <div id="ab">
+      <button class="pk round" id="btn-menu">☰</button>
+      <button class="pk round big" id="btn-a">A</button>
+    </div>
+  </div>
+  <div id="console-label">ASTRAL BEASTS <span>3D — DEMO</span></div>
+</div>
+<script src="data.js"></script>
+<script src="battle.js"></script>
+<script type="module" src="world3d.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
