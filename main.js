@@ -112,6 +112,8 @@ window.EVENTS.professor=async function(){
   beep(1240,.2,'triangle',.07);
   await say(`${G.name}は ${DEX[sp].n}を あいぼうに えらんだ！`);
   const rsp=RIVAL_PICK[sp];
+  G.flags.rivalInLab=true;
+  World.refreshNpcs();
   await say('そのとき、けんきゅうじょの ドアが いきおいよく あいた！',
     'ソラ「おっす はかせ！ …って ' + G.name + '、おまえ もう えらんだのか！」',
     'ソラは きみの おさななじみで ライバルだ。',
@@ -131,11 +133,26 @@ window.EVENTS.professor=async function(){
   G.items.orb=(G.items.orb||0)+5;
   await say('はかせ「これを もっていきなさい。キズぐすり×2と キャプトオーブ×5じゃ」',
     'はかせ「やせいの ビーストは くさむらに かくれておる。オーブで なかまに できるぞ」',
-    'ソラ「おれは さきに いくぜ！ また どこかで しょうぶだ！」',
+    'ソラ「おれは さきに いくぜ！ また どこかで しょうぶだ！」');
+  G.flags.rivalInLab=false;
+  World.refreshNpcs();
+  await say('ソラは いきおいよく かけだしていった。',
     'はかせ「むらの きたから 1ばん街道を ぬけて コハルタウンを めざすのじゃ！」');
   G.flags.starterDone=true;
   save();
   uiClose();
+};
+
+// ---------- rival in town ----------
+window.EVENTS.rivalChat=async function(){
+  if(G.badges.length>0){
+    await say('ソラ「おっ、はじまりの聖印 とったのか！ やるじゃん！」',
+      'ソラ「おまえとの ほんきの しょうぶは…2Dワールドばんの せかいで まってるぜ！」');
+  }else{
+    await say('ソラ「よう ' + G.name + '！ おそかったな！」',
+      'ソラ「おれは もう 守人ハルトに かったぜ。この どうじょうだ」',
+      'ソラ「おまえも ちょうせんしてみろよ！ みててやるからさ！」');
+  }
 };
 
 // ---------- gym & demo clear ----------

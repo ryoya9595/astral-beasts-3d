@@ -5,6 +5,9 @@
 import * as THREE from 'three';
 
 // ---------- zone data ----------
+// ライバル・ソラの見た目（茶髪の超ツンツン髪＋黒服＋赤パンツ＋黄色いデカ靴＋ペンダント）
+const SORA_LOOK={hairStyle:'superspiky', hair:0x6b4423, shirt:0x2a2a33,
+  pants:0xc23b3b, shoes:0xf2c230, bigShoes:true, pendant:true};
 const ZONES = {
   village: {
     name:'ミドリバ村', w:40, d:40, ground:0x7cb35e, sky:0xbfe3ff, bgm:'village',
@@ -74,6 +77,8 @@ const ZONES = {
        lines:['「ショップ」','たびの どうぐ うってます！']},
       {id:'sign_gym_k', x:2.6,z:-7.2, look:'sign', type:'talk',
        lines:['「ハルトの どうじょう」','はじまりの聖印に ちょうせんできる ばしょ。']},
+      {id:'koh_sora', x:-3.2,z:-6.6, look:SORA_LOOK, type:'story', event:'rivalChat',
+       showFlag:'starterDone'},
     ],
     fences:[{x:-10.6,z:-18,w:18.8,d:.5},{x:10.6,z:-18,w:18.8,d:.5}],
     exits:[{x:0,z:18.8,w:4,d:1.8, to:'route1', tx:0, tz:-31}],
@@ -83,6 +88,8 @@ const ZONES = {
     name:'モリノ研究所', indoor:true, w:16, d:13, ground:0xe8d8b0, sky:0x2a2444, bgm:'village',
     spawn:{x:0,z:4},
     npcs:[
+      {id:'lab_rival', x:2.2, z:-1.4, look:SORA_LOOK, type:'talk', showFlag:'rivalInLab',
+       lines:['ソラ「へへっ、いい あいぼう えらんだな！」','ソラ「でも おれの あいぼうのほうが つよいぜ！」']},
       {id:'prof', x:-1.4,z:-3.5, look:{hairStyle:'short', hair:0xcccccc, outfit:'coat', shirt:0xf5f5f5, pants:0x4a4a55, accessory:'glasses'}, type:'story', event:'professor'},
     ],
     pedestals:[{x:-1.6,z:-5.2,c:0xff7043},{x:1.6,z:-5.2,c:0x66bb6a},{x:4,z:-5.2,c:0x42a5f5}],
@@ -178,7 +185,8 @@ function makeCharacter(opt={}){
   const mkLeg=(x)=>{
     const pv=new THREE.Group(); pv.position.set(x,.5,0); inner.add(pv);
     const m=cap(.1,.26,pants,pv); m.position.y=-.25;
-    const shoe=sph(.11,0x4a3328,0,-.45,.05,1,.6,1.35,pv);
+    const shoe=sph(.11, opt.shoes??0x4a3328, 0,-.45,.06,
+      opt.bigShoes?1.35:1, .62, opt.bigShoes?1.8:1.35, pv);
     return pv;
   };
   const legL=mkLeg(-.14), legR=mkLeg(.14);
@@ -231,6 +239,15 @@ function makeCharacter(opt={}){
       c.position.set(sx,sy,-.02); c.castShadow=true; inner.add(c);
     });
   }
+  if(hs==='superspiky'){
+    [[-.26,1.72,-.06,.85,0],[-.13,1.86,-.04,.4,0],[.02,1.94,0,0,0],
+     [.16,1.85,-.04,-.45,0],[.27,1.7,-.06,-.9,0],[0,1.78,-.24,0,-.7],[0,1.84,.2,0,.5]]
+    .forEach(([sx,sy,sz2,rz,rx])=>{
+      const c=new THREE.Mesh(new THREE.ConeGeometry(.1,.34,6),M(hairC));
+      c.position.set(sx,sy,sz2); c.rotation.z=rz; c.rotation.x=rx;
+      c.castShadow=true; inner.add(c);
+    });
+  }
   if(hs==='long') sph(.3,hairC,0,1.18,-.18,1.1,1.6,.5);
   if(hs==='bun') sph(.15,hairC,0,1.86,-.16);
   if(hs==='ponytail'){
@@ -262,6 +279,11 @@ function makeCharacter(opt={}){
       t.position.set(ex,1.52,.3); inner.add(t);
     });
     box(.07,.02,.02,0x26262e,0,1.52,.31,inner);
+  }
+  if(opt.pendant){
+    const pd=new THREE.Mesh(new THREE.ConeGeometry(.07,.15,5),M(0xf2c230));
+    pd.position.set(0,1.0,.31); pd.rotation.x=Math.PI; inner.add(pd);
+    box(.02,.1,.02,0xc9a14a,0,1.16,.3,inner);
   }
   if(opt.cane){
     const c=cyl(.025,.03,.95,0x8a5a36,.46,.47,.12);
@@ -447,19 +469,7 @@ function buildZone(id){
     }
   });
   // npcs
-  (zone.npcs||[]).forEach(n=>{
-    if(n.goneFlag&&G.flags[n.goneFlag]) return;
-    if(n.hideFlag&&G.flags[n.hideFlag]) return;
-    let obj;
-    if(n.look==='sign'){ obj=makeSign(); }
-    else if(n.look==='pc'){ obj=makePC(); }
-    else{ obj=makeCharacter(n.look||{shirt:n.color, hair:n.hair}).g; }
-    obj.position.set(n.x,0,n.z);
-    obj.rotation.y=Math.PI; // face south (camera side)
-    scene.add(obj);
-    npcObjs.push({n, obj});
-    colliders.push({minx:n.x-.5,maxx:n.x+.5,minz:n.z-.5,maxz:n.z+.5, npcId:n.id});
-  });
+  spawnNpcs();
   // player
   playerParts=makeCharacter({hairStyle:'short', hair:0x4a3320, shirt:0xe05a47,
     pants:0x2a3a6a, accessory:'cap', capColor:0xd8344a, backpack:true});
@@ -467,6 +477,25 @@ function buildZone(id){
   scene.add(player);
 }
 
+function spawnNpcs(){
+  npcObjs.forEach(o=>scene.remove(o.obj));
+  npcObjs=[];
+  colliders=colliders.filter(c=>!c.npcId);
+  (zone.npcs||[]).forEach(n=>{
+    if(n.goneFlag&&G.flags[n.goneFlag]) return;
+    if(n.hideFlag&&G.flags[n.hideFlag]) return;
+    if(n.showFlag&&!G.flags[n.showFlag]) return;
+    let obj;
+    if(n.look==='sign'){ obj=makeSign(); }
+    else if(n.look==='pc'){ obj=makePC(); }
+    else{ obj=makeCharacter(n.look||{shirt:n.color, hair:n.hair}).g; }
+    obj.position.set(n.x,0,n.z);
+    obj.rotation.y=0; // 南向き（プレイヤー/カメラ側）
+    scene.add(obj);
+    npcObjs.push({n, obj});
+    colliders.push({minx:n.x-.5,maxx:n.x+.5,minz:n.z-.5,maxz:n.z+.5, npcId:n.id});
+  });
+}
 function removeNpc(id){
   const i=npcObjs.findIndex(o=>o.n.id===id);
   if(i>=0){ scene.remove(npcObjs[i].obj); npcObjs.splice(i,1); }
@@ -779,4 +808,5 @@ window.World={
   setHeld(d){ keys.clear(); joyVec={x:0,z:0}; joyDash=false; if(d) keys.add(d); updateHeld(); },
   debug(){ return {paused, zoneId, pos:[G.x,G.y], dash:isDashing(), canInput:canInput(), held:{...held}, tickN:_tickN, sceneOk:!!scene, playerOk:!!player}; },
   _tick(dt){ tickBody(dt); },
+  refreshNpcs(){ if(scene) spawnNpcs(); },
 };
