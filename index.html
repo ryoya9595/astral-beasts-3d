@@ -34,16 +34,24 @@ body{display:block;}
 }
 #joy-base{
   position:absolute; width:116px; height:116px; border-radius:50%;
-  background:rgba(255,255,255,.07);
-  border:2px solid rgba(255,255,255,.3);
-  display:none; pointer-events:none;
+  background:rgba(20,24,60,.25);
+  border:2px solid rgba(255,255,255,.35);
+  box-shadow:inset 0 0 18px rgba(255,255,255,.08), 0 2px 10px rgba(0,0,0,.25);
+  pointer-events:none;
   transform:translate(-50%,-50%);
+  opacity:.5; transition:opacity .15s;
 }
-#joy-base.dash{border-color:var(--gold); box-shadow:0 0 14px rgba(255,215,106,.5);}
+#joy-base.live{opacity:.95;}
+#joy-base.dash{border-color:var(--gold); box-shadow:0 0 16px rgba(255,215,106,.55);}
+#joy-base .dirs{position:absolute; inset:0; color:rgba(255,255,255,.55); font-size:11px;}
+#joy-base .dirs span{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);}
+#joy-base .dirs .n{margin-top:-44px;} #joy-base .dirs .s{margin-top:44px;}
+#joy-base .dirs .w{margin-left:-44px;} #joy-base .dirs .e{margin-left:44px;}
 #joy-knob{
   position:absolute; left:50%; top:50%; width:52px; height:52px; border-radius:50%;
-  background:rgba(255,255,255,.4);
-  border:2px solid rgba(255,255,255,.5);
+  background:rgba(255,255,255,.45);
+  border:2px solid rgba(255,255,255,.55);
+  box-shadow:0 2px 6px rgba(0,0,0,.3);
   transform:translate(-50%,-50%);
 }
 #btn-a{
@@ -69,6 +77,11 @@ body{display:block;}
   text-shadow:0 1px 2px #000; display:none;
 }
 @media (hover:hover) and (pointer:fine){ #key-hint{display:block;} }
+/* バトル・メニュー表示中は移動系コントロールを隠す */
+#app.active ~ #joy-zone,
+#app.active ~ #btn-a,
+#app.active ~ #btn-menu,
+#app.active ~ #key-hint{ display:none; }
 #scanlines{opacity:.5;}
 </style>
 <script type="importmap">
@@ -88,7 +101,10 @@ body{display:block;}
     <div id="dlg-choices"></div>
   </div>
   <div id="scanlines"></div>
-  <div id="joy-zone"><div id="joy-base"><div id="joy-knob"></div></div></div>
+  <div id="joy-zone"><div id="joy-base">
+    <div class="dirs"><span class="n">▲</span><span class="s">▼</span><span class="w">◀</span><span class="e">▶</span></div>
+    <div id="joy-knob"></div>
+  </div></div>
   <button id="btn-menu">☰</button>
   <button id="btn-a">A</button>
   <div id="key-hint">移動：WASD/矢印　ダッシュ：Shift　はなす：Z　メニュー：X</div>

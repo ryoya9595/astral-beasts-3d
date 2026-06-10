@@ -626,13 +626,21 @@ function joyUpdate(e){
   joyBase.classList.toggle('dash',joyDash);
   updateHeld();
 }
+function joyRest(){
+  // 待機中も左下にうっすら常駐（ここで操作できるよ、の目印）
+  const r=joyZone.getBoundingClientRect();
+  joyBase.style.left='86px';
+  joyBase.style.top=Math.max(80, r.height-92)+'px';
+  joyBase.classList.remove('live','dash');
+  joyKnob.style.transform='translate(-50%,-50%)';
+}
 function joyEnd(){
   joyId=null; joyVec={x:0,z:0}; joyDash=false;
-  joyBase.style.display='none';
-  joyBase.classList.remove('dash');
-  joyKnob.style.transform='translate(-50%,-50%)';
+  joyRest();
   updateHeld();
 }
+joyRest();
+window.addEventListener('resize',()=>{ if(joyId===null) joyRest(); });
 joyZone.addEventListener('pointerdown',e=>{
   if(joyId!==null) return;
   joyId=e.pointerId;
@@ -640,7 +648,7 @@ joyZone.addEventListener('pointerdown',e=>{
   const r=joyZone.getBoundingClientRect();
   joyBase.style.left=(e.clientX-r.left)+'px';
   joyBase.style.top=(e.clientY-r.top)+'px';
-  joyBase.style.display='block';
+  joyBase.classList.add('live');
   try{ joyZone.setPointerCapture(e.pointerId); }catch(err){}
   joyUpdate(e);
   e.preventDefault();
